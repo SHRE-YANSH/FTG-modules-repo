@@ -67,17 +67,17 @@ class UserInfoMod(loader.Module):
             except ValueError:
                 return await utils.answer(message, self.strings("find_error", message))
         logger.debug(full)
-        reply = self.strings("first_name", message).format(self._handle_string(full.user.first_name))
-        if full.user.last_name is not None:
-            reply += self.strings("last_name", message).format(self._handle_string(full.user.last_name))
-        reply += self.strings("id", message).format(utils.escape_html(full.user.id))
-        reply += self.strings("bio", message).format(self._handle_string(full.about))
-        reply += self.strings("restricted", message).format(utils.escape_html(str(full.user.restricted)))
-        reply += self.strings("deleted", message).format(utils.escape_html(str(full.user.deleted)))
-        reply += self.strings("bot", message).format(utils.escape_html(str(full.user.bot)))
-        reply += self.strings("verified", message).format(utils.escape_html(str(full.user.verified)))
-        if full.user.photo:
-            reply += self.strings("dc_id", message).format(utils.escape_html(str(full.user.photo.dc_id)))
+        reply = self.strings("first_name", message).format(self._handle_string(full.users[0].first_name))
+        if full.users[0].last_name is not None:
+            reply += self.strings("last_name", message).format(self._handle_string(full.users[0].last_name))
+        reply += self.strings("id", message).format(utils.escape_html(full.users[0].id))
+        reply += self.strings("bio", message).format(self._handle_string(full.full_user.about))
+        reply += self.strings("restricted", message).format(utils.escape_html(str(full.users[0].restricted)))
+        reply += self.strings("deleted", message).format(utils.escape_html(str(full.users[0].deleted)))
+        reply += self.strings("bot", message).format(utils.escape_html(str(full.users[0].bot)))
+        reply += self.strings("verified", message).format(utils.escape_html(str(full.users[0].verified)))
+        if full.users[0].photo:
+            reply += self.strings("dc_id", message).format(utils.escape_html(str(full.users[0].photo.dc_id)))
         await utils.answer(message, reply)
 
     @loader.unrestricted
