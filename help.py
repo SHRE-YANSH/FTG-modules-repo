@@ -23,16 +23,10 @@ from telethon import functions, types
 logger = logging.getLogger(__name__)
 from telethon.tl.functions.channels import JoinChannelRequest
 
-def register(cb):
-    cb(HelpMod())
+
 
 class HelpMod(loader.Module):
-    """Prevents people sending you unsolicited private messages"""
-    def __init__(self):
-        super().__init__()
-        self.name = _("Help")
-        self.allmodules = None
-        self.client = None
+    """All help commands"""
         
     async def supportcmd(self, message):
     	"""Joins the support chat"""
@@ -43,7 +37,7 @@ class HelpMod(loader.Module):
     	self.client = client    
         
     async def helpcmd(self, message):
-        """Block this user to PM without being warned"""
+        """Help for all available modules"""
         raph = "<b>Available Commands in RaphielGang section:<b>\n"
         uni = "<b>Available Commands in Uniborg section:<b>\n"
         ftg = "<b>Available Commands in Friendly-Telegram section:</b>\n"
