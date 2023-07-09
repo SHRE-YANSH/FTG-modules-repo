@@ -112,7 +112,7 @@ class AutoProfileMod(loader.Module):
                         await self.client(functions.photos.
                                           DeletePhotosRequest(await self.client.get_profile_photos("me", limit=1)))
 
-                    await self.client(functions.photos.UploadProfilePhotoRequest(fallback=True,await self.client.upload_file(buf)))
+                    await self.client(functions.photos.UploadProfilePhotoRequest(await self.client.upload_file(buf),fallback=True))
                     buf.close()
                 await asyncio.sleep(60)
 
