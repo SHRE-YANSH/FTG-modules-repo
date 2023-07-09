@@ -96,11 +96,17 @@ class HelpMod(loader.Module):
         else:
         	module = None
         	for mod in self.allmodules.modules:
-        		if mod.name.lower() == args.lower():
-        			module = mod
+			if mod.strings("name", message).lower() == args.lower():
+				module = mod
+
         	if module is None:
-        		await message.edit("<code>" + _("Invalid module name specified") + "</code>")
+        		await message.edit("<code>" + "Invalid module name specified" + "</code>")
         		return
+		try:
+			name = module.strings("name", message)
+		except KeyError:
+			name = getattr(module, "name", "ERROR")
+
         	reply = self.single_mod_header.format(utils.escape_html(name),utils.escape_html((self.db.get(main.__name__,"command_prefix",False) or ".")[0]))
 	
         	if module.__doc__:
