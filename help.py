@@ -107,17 +107,17 @@ class HelpMod(loader.Module):
         except KeyError:
             name = getattr(module, "name", "ERROR")
 
-            reply = self.single_mod_header.format(utils.escape_html(name),utils.escape_html((self.db.get(main.__name__,"command_prefix",False) or ".")[0]))
-    
-            if module.__doc__:
-                reply += utils.escape_html(inspect.cleandoc(module.__doc__))
+        reply = self.single_mod_header.format(utils.escape_html(name),utils.escape_html((self.db.get(main.__name__,"command_prefix",False) or ".")[0]))
+
+        if module.__doc__:
+            reply += utils.escape_html(inspect.cleandoc(module.__doc__))
+        else:
+            logger.warning("Module %s is missing docstring!", module)
+        for name, fun in module.commands.items():
+            reply += f"\n  <code>{name}</code>\n"
+            if fun.__doc__:
+                reply += utils.escape_html("\n".join(["    " + x for x in 
+                _(inspect.cleandoc(fun.__doc__)).splitlines()]))
             else:
-                logger.warning("Module %s is missing docstring!", module)
-            for name, fun in module.commands.items():
-                reply += f"\n  <code>{name}</code>\n"
-                if fun.__doc__:
-                    reply += utils.escape_html("\n".join(["    " + x for x in 
-                    _(inspect.cleandoc(fun.__doc__)).splitlines()]))
-                else:
-                    reply += _("There is no documentation for this command")
-            await utils.answer(message, reply)
+                reply += _("There is no documentation for this command")
+        await utils.answer(message, reply)
