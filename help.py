@@ -14,7 +14,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from .. import loader, utils
+from .. import loader, utils, main
 
 import logging
 import inspect
@@ -27,6 +27,9 @@ from telethon.tl.functions.channels import JoinChannelRequest
 
 class HelpMod(loader.Module):
     """All help commands"""
+    single_mod_header = ("<b>Help for</b> <u>{}</u>:\nNote that the monospace text are the commands "
+                         "and they can be run with <code>{}&lt;command&gt;</code>")
+
         
     async def supportcmd(self, message):
     	"""Joins the support chat"""
@@ -95,7 +98,8 @@ class HelpMod(loader.Module):
         	if module is None:
         		await message.edit("<code>" + _("Invalid module name specified") + "</code>")
         		return
-        	reply = "<b>" + _("Help for</b> <code>{}</code>:").format(utils.escape_html(_(module.name))) + "\n  "	
+        	reply = self.single_mod_header.format(utils.escape_html(name),utils.escape_html((self.db.get(main.__name__,"command_prefix",False) or ".")[0]))
+	
         	if module.__doc__:
         		reply += utils.escape_html(inspect.cleandoc(module.__doc__))
         	else:
