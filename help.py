@@ -37,7 +37,10 @@ class HelpMod(loader.Module):
     	await message.edit(_("<code>Join to</code> <a href='https://t.me/friendlytgbot'>support chat</a>"))
 
     async def client_ready(self, client, db):
-    	self.client = client    
+        self.client = client
+        self.is_bot = await client.is_bot()
+        self.db = db
+   
         
     async def helpcmd(self, message):
         """Help for all available modules"""
